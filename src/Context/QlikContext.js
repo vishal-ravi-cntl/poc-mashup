@@ -4,11 +4,11 @@ import { useOpenDoc } from "../Hooks/qlik-hooks/Global";
 
 export const QlikContext = createContext();
 
-export function SessionProvider({ children }) {
+export function SessionProvider({ appName, children }) {
   const config = {
     host: "dash.condenast.com",
     isSecure: true,
-    appname: "799ab440-b740-4c54-b941-bb1413ce6696",
+    appname: appName,
   };
   const session = useConnectEngine(config);
 
