@@ -1,5 +1,6 @@
 import "./App.css";
 import BarChart from "./Components/BarChart";
+import Filter from "./Components/Filter";
 import Kpi from "./Components/Kpi";
 import { SessionProvider } from "./Context/QlikContext";
 
@@ -14,6 +15,7 @@ function App() {
   return (
     <div className="App">
       <SessionProvider appName={salesAppId}>
+        <Filter expression={"Country"} label={"Country"} />
         <Kpi objectId={salesKpiObjectID} />
         <BarChart objectId={salesTableObjectID} />
       </SessionProvider>

@@ -64,7 +64,7 @@ function BarChart({ objectId }) {
   return (
     <div>
       {showChart ? (
-        <div>{"Data Value: " + data[0].sales}</div>
+        <div>{"Data Value: " + data[0]}</div>
       ) : (
         <div>Bar chart data Loading..</div>
       )}
