@@ -6,9 +6,9 @@ import {
 } from "../Hooks/qlik-hooks/GenericObject";
 import { useSession } from "../Context/QlikContext";
 
-function BarChart({ objectId }) {
-  const app = useSession();
-  const obj = useGetObject(app, { params: [objectId] });
+function BarChart({ objectId, appIndex }) {
+  const apps = useSession();
+  const obj = useGetObject(apps[appIndex], { params: [objectId] });
   const objLayout = useGetLayout(obj, { params: [], invalidations: true });
   const hyperCubeData = useGetHyperCubeData(obj);
 

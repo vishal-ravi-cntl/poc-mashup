@@ -11,31 +11,45 @@ function Filter({ expression, label }) {
   const defaultSelect = null;
   const noObjectLoader = false;
 
-  const app = useSession();
+  const apps = useSession();
   const [data, setData] = useState([]);
   const [openDropDown, setOpenDropDown] = useState(false);
   const [selected, setSelected] = useState(null);
   const [title, setTitle] = useState(null);
 
-  const listObject = useCreateSessionObject(app, {
-    params: [
-      {
-        qInfo: { qType: "listbox" },
-        qListObjectDef: {
-          qDef: { qFieldDefs: [expression] },
-          qInitialDataFetch: [{ qWidth: 1, qHeight: 1000 }],
+  const listObjects = [
+    useCreateSessionObject(apps[0], {
+      params: [
+        {
+          qInfo: { qType: "listbox" },
+          qListObjectDef: {
+            qDef: { qFieldDefs: [expression] },
+            qInitialDataFetch: [{ qWidth: 1, qHeight: 1000 }],
+          },
+          qSelectionObjectDef: {},
         },
-        qSelectionObjectDef: {},
-      },
-    ],
-  });
+      ],
+    }),
+    useCreateSessionObject(apps[1], {
+      params: [
+        {
+          qInfo: { qType: "listbox" },
+          qListObjectDef: {
+            qDef: { qFieldDefs: [expression] },
+            qInitialDataFetch: [{ qWidth: 1, qHeight: 1000 }],
+          },
+          qSelectionObjectDef: {},
+        },
+      ],
+    }),
+  ];
 
-  const listObjectLayout = useGetLayout(listObject, {
+  const listObjectLayout = useGetLayout(listObjects[0], {
     params: [],
     invalidations: true,
   });
-  const listSelect = useSelectListObjectValues(listObject);
-
+  const listSelect0 = useSelectListObjectValues(listObjects[0]);
+  const listSelect1 = useSelectListObjectValues(listObjects[1]);
   useEffect(() => {
     if (listObjectLayout?.qResponse?.qListObject?.qDataPages?.[0]?.qMatrix) {
       let siteOptions =
@@ -86,7 +100,12 @@ function Filter({ expression, label }) {
                     <div
                       className="flex justify-between px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                       onClick={() => {
-                        listSelect.call(
+                        listSelect0.call(
+                          "/qListObjectDef",
+                          [list.qElement],
+                          false
+                        );
+                        listSelect1.call(
                           "/qListObjectDef",
                           [list.qElement],
                           false

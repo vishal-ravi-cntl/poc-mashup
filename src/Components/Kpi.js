@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useSession } from "../Context/QlikContext";
 import { useGetObject } from "../Hooks/qlik-hooks/Doc";
 import { useGetLayout } from "../Hooks/qlik-hooks/GenericObject";
-function Kpi({ objectId }) {
-  const app = useSession();
-  const obj = useGetObject(app, { params: [objectId] });
+function Kpi({ objectId, appIndex }) {
+  const apps = useSession();
+  const obj = useGetObject(apps[appIndex], { params: [objectId] });
   const objLayout = useGetLayout(obj, { params: [], invalidations: true });
   const [data, setData] = useState();
   const [showKPI, setShowKPI] = useState(false);
