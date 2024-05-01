@@ -66,7 +66,7 @@ function Filter({ expression, label }) {
   }, [listObjectLayout]);
 
   useEffect(() => {
-    console.log({ data });
+    // console.log({ data });
     let checkSelected = data.find((item, idx) => item.qState === "S");
     if (checkSelected) {
       setSelected(data.find((item, idx) => item.qState === "S"));
