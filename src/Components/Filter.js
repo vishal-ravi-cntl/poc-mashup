@@ -77,7 +77,7 @@ function Filter({ expression, label }) {
   return (
     <div className="relative">
       <button
-        className="border bg-white font-small text-sm px-2.5 py-2.5 inline-flex items-center w-64 justify-between"
+        className="font-sans border rounded-md text-sm px-2.5 py-2.5 inline-flex items-center w-64 justify-between"
         type="button"
         onClick={() => setOpenDropDown(!openDropDown)}
       >
@@ -100,16 +100,30 @@ function Filter({ expression, label }) {
                     <div
                       className="flex justify-between px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                       onClick={() => {
-                        listSelect0.call(
-                          "/qListObjectDef",
-                          [list.qElement],
-                          false
-                        );
-                        listSelect1.call(
-                          "/qListObjectDef",
-                          [list.qElement],
-                          false
-                        );
+                        if (list.qState === "S") {
+                          listSelect0.call(
+                            "/qListObjectDef",
+                            [list.qElement],
+                            true
+                          );
+                          listSelect1.call(
+                            "/qListObjectDef",
+                            [list.qElement],
+                            true
+                          );
+                          setSelected(false);
+                        } else {
+                          listSelect0.call(
+                            "/qListObjectDef",
+                            [list.qElement],
+                            false
+                          );
+                          listSelect1.call(
+                            "/qListObjectDef",
+                            [list.qElement],
+                            false
+                          );
+                        }
                         setOpenDropDown(!openDropDown);
                         // if (!noObjectLoader) objLoader.setLoadObjects(false);
                       }}

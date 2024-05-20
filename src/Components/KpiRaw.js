@@ -1,26 +1,72 @@
 import React, { useEffect, useState } from "react";
 import { useSession } from "../Context/QlikContext";
-import { useGetObject } from "../Hooks/qlik-hooks/Doc";
+import {
+  useCreateObject,
+  useCreateSessionObject,
+  useGetObject,
+} from "../Hooks/qlik-hooks/Doc";
 import { useGetLayout } from "../Hooks/qlik-hooks/GenericObject";
-function Kpi({ title, objectId, appIndex }) {
+function KpiRaw({ title, appIndex }) {
   const apps = useSession();
-  const obj = useGetObject(apps[appIndex], { params: [objectId] });
-  const objLayout = useGetLayout(obj, { params: [], invalidations: true });
   const [data, setData] = useState();
   const [showKPI, setShowKPI] = useState(false);
 
+  const objectProperties = {
+    qInfo: {
+      qType: "my-generic-object",
+    },
+    qHyperCubeDef: {
+      qDimensions: [
+        // {
+        //   qDef: {
+        //     qFieldDefs: ["Country"],
+        //   },
+        // },
+        // {
+        //   qDef: {
+        //     qFieldDefs: ["Month"],
+        //   },
+        // },
+      ],
+      qMeasures: [
+        {
+          qDef: {
+            qDef: "Sum(Sales)",
+          },
+        },
+      ],
+      qInitialDataFetch: [
+        {
+          qTop: 0,
+          qLeft: 0,
+          qHeight: 10, // Adjust based on your needs
+          qWidth: 3,
+        },
+      ],
+    },
+  };
+
+  const pseudoObj = useCreateSessionObject(apps[appIndex], {
+    params: [objectProperties],
+  });
+
+  const pseudoObjLayout = useGetLayout(pseudoObj, {
+    params: [],
+    invalidations: true,
+  });
+
   useEffect(() => {
-    if (objLayout.qResponse != null) {
-      // console.log({ objLayout });
+    // console.log({ pseudoObjLayout });
+    if (pseudoObjLayout.qResponse != null) {
       const kpiValue =
-        objLayout.qResponse.qHyperCube?.qDataPages[0].qMatrix[0][0].qText;
+        pseudoObjLayout.qResponse.qHyperCube?.qDataPages[0].qMatrix[0][0].qText;
       setData(formatNumberAbbreviated(kpiValue));
       setShowKPI(true);
     }
-  }, [objLayout]);
+  }, [pseudoObjLayout]);
 
   // useEffect(() => {
-  //   console.log({ data });
+  //   // console.log({ data });
   // }, [data]);
 
   function formatNumberAbbreviated(number) {
@@ -52,4 +98,4 @@ function Kpi({ title, objectId, appIndex }) {
   );
 }
 
-export default Kpi;
+export default KpiRaw;
