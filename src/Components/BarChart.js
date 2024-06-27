@@ -34,7 +34,7 @@ function BarChart({
 
   const [data, setData] = useState([]);
   const [showChart, setShowChart] = useState(false);
-  const [totalRows, setTotalRows] = useState(-1);
+  // const [totalRows, setTotalRows] = useState(-1);
   const rowsPerPage = 3000;
 
   const width = 550,
@@ -43,8 +43,8 @@ function BarChart({
     legendHeight = 200;
   useEffect(() => {
     if (objLayout.qResponse != null) {
-      const temptotalRows = objLayout.qResponse.qHyperCube.qSize.qcy;
-      setTotalRows(temptotalRows);
+      const totalRows = objLayout.qResponse.qHyperCube.qSize.qcy;
+      // setTotalRows(temptotalRows);
       setData([]);
       // console.log("herree");
       for (let i = 0; i < totalRows; i += rowsPerPage) {
@@ -70,7 +70,7 @@ function BarChart({
         ]);
       }
     }
-  }, [objLayout, totalRows]);
+  }, [objLayout]);
 
   useEffect(() => {
     if (hyperCubeData.qResponse != null) {

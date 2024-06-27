@@ -6,6 +6,7 @@ import Kpi from "./Components/Kpi";
 import { SessionProvider } from "./Context/QlikContext";
 import DropDown from "./Components/DropDown";
 import KpiRaw from "./Components/KpiRaw";
+import FilterQtext from "./Components/FilterQtext";
 
 function App() {
   const salesKpiObjectID = "DhusPup";
@@ -18,7 +19,8 @@ function App() {
       <SessionProvider>
         <div class="flex flex-row justify-between mb-3 ">
           <DropDown />
-          <Filter expression={"Country"} label={"Country"} />
+          {/* <Filter expression={"Country"} label={"Country"} /> */}
+          <FilterQtext expression={"Country"} label={"Country"} />
         </div>
         <div class="flex flex-row justify-between">
           <div class="flex flex-col ">
